@@ -1,47 +1,43 @@
+'use client'
+
+import { useState } from 'react'
+import { createDemoApplication } from './actions/leave'
+import { Bell, ChevronDown, ClipboardList, FileCheck2, FileClock, LayoutDashboard, Menu, Plus, Search, Settings, ShieldCheck, Users, X } from 'lucide-react'
+
+const applications = [
+  { id: 'LA-2026-0048', employee: 'Maria Lourdes D. Santos', type: 'Vacation Leave', dates: 'Oct 27 – Oct 31, 2026', days: '5 days', status: 'For Review', tone: 'amber' },
+  { id: 'LA-2026-0047', employee: 'Juan Carlo A. Reyes', type: 'Sick Leave', dates: 'Oct 21 – Oct 22, 2026', days: '2 days', status: 'Approved', tone: 'green' },
+  { id: 'LA-2026-0046', employee: 'Ana Marie C. Flores', type: 'Special Leave', dates: 'Oct 18, 2026', days: '1 day', status: 'Pending Signature', tone: 'blue' },
+  { id: 'LA-2026-0045', employee: 'Rogelio B. Castro', type: 'Vacation Leave', dates: 'Oct 14 – Oct 16, 2026', days: '3 days', status: 'Approved', tone: 'green' },
+]
+
 export default function Page() {
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [message, setMessage] = useState('')
+
+  async function addDemo() {
+    const result = await createDemoApplication()
+    setMessage(`${result.controlNumber} created successfully`)
+    setTimeout(() => setMessage(''), 3500)
+  }
+
   return (
-    <main
-      style={{
-        colorScheme: 'light dark',
-        position: 'relative',
-        display: 'flex',
-        minHeight: '100vh',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: 'light-dark(#fff, #000)',
-        color: 'light-dark(#000, #fff)',
-      }}
-    >
-      <svg
-        aria-hidden="true"
-        style={{ width: 80, height: 80 }}
-        width={80}
-        height={80}
-        fill="none"
-        viewBox="0 0 20 20"
-        xmlns="http://www.w3.org/2000/svg"
-        stroke="currentColor"
-        strokeWidth="0.5"
-      >
-        <path
-          d="M14.2 14.2H17V6.9375C17 4.76288 15.2371 3 13.0625 3H5.8V5.8M14.2 14.2V7.79063L7.79062 14.2H14.2ZM14.2 14.2V17H6.9375C4.76288 17 3 15.2371 3 13.0625V5.8H5.8M5.8 5.8V12.2313L12.2313 5.8H5.8Z"
-          strokeLinejoin="round"
-        />
-      </svg>
-      <p
-        style={{
-          position: 'absolute',
-          left: '50%',
-          top: 'calc(50% + 56px)',
-          transform: 'translateX(-50%)',
-          whiteSpace: 'nowrap',
-          fontSize: '14px',
-          fontWeight: 500,
-          color: 'light-dark(#71717a, #a1a1aa)',
-        }}
-      >
-        Your v0 generation will show here.
-      </p>
-    </main>
+    <div className="min-h-screen bg-[#f5f7fb] text-slate-900">
+      <header className="flex h-16 items-center justify-between border-b border-slate-200 bg-white px-5 lg:px-8">
+        <div className="flex items-center gap-3"><button className="rounded-lg p-2 hover:bg-slate-100 lg:hidden" onClick={() => setSidebarOpen(!sidebarOpen)} aria-label="Toggle navigation">{sidebarOpen ? <X /> : <Menu />}</button><div className="flex size-9 items-center justify-center rounded-xl bg-[#12366d] text-white"><ShieldCheck /></div><div><p className="text-sm font-bold text-[#12366d]">SDO BENGUET</p><p className="text-[10px] font-medium tracking-[0.18em] text-slate-400">E-LEAVE MANAGEMENT</p></div></div>
+        <div className="flex items-center gap-4"><button className="relative rounded-lg p-2 text-slate-500 hover:bg-slate-100" aria-label="Notifications"><Bell /><span className="absolute right-1 top-1 size-2 rounded-full bg-[#d5a63b]" /></button><div className="hidden h-8 w-px bg-slate-200 sm:block" /><button className="flex items-center gap-2"><div className="flex size-9 items-center justify-center rounded-full bg-[#dce9f7] text-sm font-bold text-[#12366d]">AD</div><span className="hidden text-left sm:block"><span className="block text-sm font-semibold">Admin User</span><span className="block text-xs text-slate-400">HR Administrator</span></span><ChevronDown className="hidden size-4 text-slate-400 sm:block" /></button></div>
+      </header>
+      <div className="flex">
+        <aside className={`${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} fixed inset-y-16 left-0 z-20 w-64 border-r border-slate-200 bg-white p-4 transition-transform lg:static lg:translate-x-0`}><p className="mb-3 px-3 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">Workspace</p><nav className="flex flex-col gap-1"><NavItem active icon={<LayoutDashboard />} label="Dashboard" /><NavItem icon={<ClipboardList />} label="Leave Applications" count="12" /><NavItem icon={<Users />} label="Employees" /><NavItem icon={<FileCheck2 />} label="Approvals" count="4" /><NavItem icon={<FileClock />} label="Reports" /></nav><div className="my-6 border-t border-slate-100" /><p className="mb-3 px-3 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">Administration</p><nav className="flex flex-col gap-1"><NavItem icon={<Settings />} label="System Settings" /></nav><div className="mt-auto hidden rounded-xl bg-[#12366d] p-4 text-white lg:block"><p className="text-xs font-semibold text-[#e8c76a]">PHASE 1 FOUNDATION</p><p className="mt-2 text-xs leading-5 text-blue-100">Shared workspace and centralized records are ready for the next workflow phase.</p></div></aside>
+        <main className="min-w-0 flex-1 p-5 lg:p-8"><div className="mx-auto max-w-7xl"><div className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-end"><div><p className="mb-2 text-sm font-medium text-[#b18420]">Wednesday, October 23, 2026</p><h1 className="text-3xl font-bold tracking-tight text-[#12366d]">Good morning, Admin</h1><p className="mt-1 text-sm text-slate-500">Here&apos;s what&apos;s happening with your leave office today.</p></div><button onClick={addDemo} className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#12366d] px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#0d2954]"><Plus className="size-4" /> New application</button></div>{message && <div className="mb-5 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700">{message}</div>}
+          <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4"><Stat label="Total Applications" value="128" detail="12 this month" icon={<ClipboardList />} /><Stat label="For Review" value="12" detail="Requires attention" icon={<FileClock />} accent /><Stat label="Approved" value="94" detail="73.4% of total" icon={<FileCheck2 />} /><Stat label="Active Employees" value="1,248" detail="Across 32 offices" icon={<Users />} /></section>
+          <section className="mt-6 grid gap-6 xl:grid-cols-[1.45fr_1fr]"><div className="rounded-xl border border-slate-200 bg-white shadow-sm"><div className="flex flex-col gap-3 border-b border-slate-100 p-5 sm:flex-row sm:items-center sm:justify-between"><div><h2 className="font-bold text-[#12366d]">Recent applications</h2><p className="mt-1 text-xs text-slate-500">The latest activity across the shared workspace</p></div><button className="flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-600"><Search className="size-3.5" /> Search records</button></div><div className="overflow-x-auto"><table className="w-full min-w-[680px] text-left text-sm"><thead className="bg-slate-50 text-[11px] font-bold uppercase tracking-wider text-slate-400"><tr><th className="px-5 py-3">Application</th><th className="px-5 py-3">Leave type</th><th className="px-5 py-3">Schedule</th><th className="px-5 py-3">Status</th></tr></thead><tbody>{applications.map((app) => <tr key={app.id} className="border-t border-slate-100"><td className="px-5 py-4"><p className="font-semibold text-slate-800">{app.employee}</p><p className="mt-1 font-mono text-[11px] text-slate-400">{app.id}</p></td><td className="px-5 py-4 text-slate-600">{app.type}</td><td className="px-5 py-4"><p className="text-slate-700">{app.dates}</p><p className="mt-1 text-xs text-slate-400">{app.days}</p></td><td className="px-5 py-4"><span className={`rounded-full px-2.5 py-1 text-[11px] font-bold ${app.tone === 'green' ? 'bg-emerald-50 text-emerald-700' : app.tone === 'blue' ? 'bg-blue-50 text-blue-700' : 'bg-amber-50 text-amber-700'}`}>{app.status}</span></td></tr>)}</tbody></table></div><div className="border-t border-slate-100 p-4 text-center"><button className="text-xs font-bold text-[#12366d] hover:underline">View all applications</button></div></div><div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm"><div className="flex items-center justify-between"><div><h2 className="font-bold text-[#12366d]">Leave credits overview</h2><p className="mt-1 text-xs text-slate-500">Current balances for all employees</p></div><button className="text-xs font-bold text-[#12366d]">View report</button></div><div className="mt-6 flex items-center gap-7"><div className="relative flex size-32 items-center justify-center rounded-full" style={{ background: 'conic-gradient(#12366d 0 68%, #d5a63b 68% 83%, #e2e8f0 83% 100%)' }}><div className="flex size-24 flex-col items-center justify-center rounded-full bg-white"><span className="text-2xl font-bold text-[#12366d]">68%</span><span className="text-[10px] text-slate-400">utilized</span></div></div><div className="flex flex-col gap-3 text-xs"><Legend color="bg-[#12366d]" label="Vacation leave" value="68%" /><Legend color="bg-[#d5a63b]" label="Sick leave" value="15%" /><Legend color="bg-slate-200" label="Special leave" value="17%" /></div></div><div className="mt-7 rounded-lg bg-[#f6f8fc] p-3 text-xs leading-5 text-slate-500"><strong className="text-slate-700">Centralized records:</strong> all offices access one shared set of applications and employee balances.</div></div></section>
+        </div></main>
+      </div>
+    </div>
   )
 }
+
+function NavItem({ icon, label, count, active }: { icon: React.ReactNode; label: string; count?: string; active?: boolean }) { return <button className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium ${active ? 'bg-[#eaf1fb] text-[#12366d]' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800'}`}><span className="[&>svg]:size-[17px]">{icon}</span><span className="flex-1 text-left">{label}</span>{count && <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-bold text-slate-500">{count}</span>}</button> }
+function Stat({ label, value, detail, icon, accent }: { label: string; value: string; detail: string; icon: React.ReactNode; accent?: boolean }) { return <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm"><div className="flex items-start justify-between"><div><p className="text-xs font-semibold text-slate-500">{label}</p><p className="mt-3 text-3xl font-bold text-[#12366d]">{value}</p><p className={`mt-1 text-xs ${accent ? 'font-semibold text-[#b18420]' : 'text-slate-400'}`}>{detail}</p></div><div className={`rounded-lg p-2.5 ${accent ? 'bg-[#fff7df] text-[#b18420]' : 'bg-[#eaf1fb] text-[#12366d]'}`}>{icon}</div></div></div> }
+function Legend({ color, label, value }: { color: string; label: string; value: string }) { return <div className="flex items-center gap-2"><span className={`size-2.5 rounded-full ${color}`} /><span className="w-24 text-slate-500">{label}</span><strong className="text-slate-700">{value}</strong></div> }
